@@ -2,7 +2,10 @@
 {
     font-family: 'Titillium Web', sans-serif;
 }
-
+.pageBg
+{
+   background-color: rgb(58, 58, 58); 
+}
 #dino
 {
     width: 60px;
@@ -15,51 +18,80 @@
 }
 .dinoAnimation
 {
-    animation: 1s dinowalk infinite;
+    animation: 0.1s dinowalk infinite;
 }
 #grid
 {
     width:600px;
     height: 200px;
    margin: auto;
-   border: 1px solid black;
    position: relative;
    overflow: hidden;
+   background: linear-gradient(to bottom, rgb(58, 58, 58) 80%, rgb(41, 41, 41) 0%);
 }
 .obstacle
 {
-    width: 20px;
-    height: 20px;
-    background-color: black;
+    width: 50px;
+    height: 50px;
     position: absolute;
     bottom: 10px;
     z-index: 5;
+    background-image: url('images/box.png');
+    background-position: bottom center;
+    background-repeat: no-repeat;
 }
 .back_elem
 {
-    width: 20px;
-    height: 20px;
-    background-color: grey;
+    width: 30px;
+    height: 35px;
     position: absolute;
-    bottom: 50%;
+    bottom: 20%;
     z-index: 4;
+    background-image: url('images/mouse.png');
+    background-position: bottom center;
+    background-repeat: no-repeat;
 }
 .back_elem2
 {
-    width: 20px;
-    height: 20px;
-    background-color: grey;
+    width: 130px;
+    height: 50px;
     position: absolute;
-    bottom: 20%;
+    top: 0%;
     z-index: 2;
+    background-image: url('images/chain.png');
+    background-position: bottom center;
+    background-repeat: no-repeat;
+}
+.back_elem3
+{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    bottom: 40%;
+    z-index: 2;
+    background-image: url('images/windo.png');
+    background-position: bottom center;
+    background-repeat: no-repeat;
 }
 #scoreboard
 {
     top: 10px;
     left: 10px;
     position: absolute; 
-    
+    color: #ffffff;
+    z-index: 10;
 }
+#gameStart
+{
+    top: 50%;
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #ffffff;
+    font-weight: 300;
+}   
+        
 #gameOver
 {
     top: 10px;
@@ -67,7 +99,21 @@
     visibility: hidden;
     left: 50%;
     transform: translateX(-50%);
+    text-align: center;
 }
+#gameOver h1
+{
+    color: #ffffff;
+}
+#playAgain
+{
+    background-color: #ee7d11;
+    color: #fff;
+    padding: 2px 5px;
+    text-decoration: none;
+    margin: auto
+}
+
 @keyframes dinowalk
 {
     0% {

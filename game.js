@@ -13,6 +13,7 @@ let refreshInterv = 20
 let radomTimeOffset = refreshInterv * jumpStep * jumpHeightMulti //delay based on jumplenght and game refreshinterval
 let gameSpeed = 5
 let score = 0
+let gameRunning = false;
 console.log(radomTimeOffset);
 // computing  hight
 let jumpMaxHeight = (jumpStep*gravity) * jumpHeightMulti
@@ -21,14 +22,11 @@ console.log(jumpMaxHeight);
 function control(e) {
     if (e.keyCode == 32)
     {
-       console.log("space");
-        
        if (!isJumping)
        {
             isJumping = true
              dinoJump();    
        }
-        //on space 
     }
 }
 document.addEventListener('keyup', control)
@@ -36,14 +34,10 @@ document.addEventListener('keyup', control)
 function dinoJump() {
     if (!isGameOver)
     {   
-            let up = true
-            let timer = setInterval(function() {
-            console.log(dino.style.bottom);
-            console.log(up);
-        
+        let up = true
+        let timer = setInterval(function() {  
         if (!up)
-            {
-                //going down
+            {   //going down
                 if ( position > basepostion) 
                 position -= jumpStep * gravity
                 else 
@@ -54,8 +48,7 @@ function dinoJump() {
                 }  
             } 
             else
-            {
-                //going up
+            {    //going up
                 if (position > jumpMaxHeight)
                 up = false;
                 else position += jumpStep
@@ -70,7 +63,6 @@ function generateObstacles() {
     if (!isGameOver)
      {   
         let randomTime = (Math.random() * radomTimeOffset) + (gravity*radomTimeOffset) //msec interval to make game playable on start
-       
         const obstacle = document.createElement('div')
         obstacle.classList.add('obstacle')
         obstacle.classList.add('hideonover')
@@ -82,12 +74,14 @@ function generateObstacles() {
 
     let timerObstacle = setInterval(function() {
 
-    if (obstaclePosition < 10)
+    if (obstaclePosition < 0 - obstaclePositionOffset )
         {   
         clearInterval(timerObstacle)
         obstacle.remove()
         score += 10;
-        radomTimeOffset -= 10 //increse game speed
+        //increse game speed
+        radomTimeOffset -= 10 
+        gameSpeed +=0.1 
         scoreboard.textContent = score    
         } else 
         {
@@ -114,7 +108,7 @@ function generateObstacles() {
     }
 }
 
-function generateBackElem(elem,offset) {
+function generateBackElem(elem,offset,speed) {
     if (!isGameOver)
      {   
         let randomTime = Math.random() * offset //msec
@@ -129,23 +123,32 @@ function generateBackElem(elem,offset) {
         console.log(randomTime);
 
     let timerbackelem = setInterval(function() {
-    if (backelemPosition < 0)
+    if (backelemPosition < 0 - backelemPositionOffset)
         {   
         clearInterval(timerbackelem)
         backelem.remove()
         } else 
         {
-            backelemPosition -= gameSpeed / 2
+            backelemPosition -= speed
             backelem.style.left = backelemPosition +'px'
         }
     },refreshInterv)
-    timeoutback = setTimeout(function(){generateBackElem(elem,radomTimeOffset);},randomTime)
+    timeoutback = setTimeout(function(){generateBackElem(elem,radomTimeOffset,gameSpeed);},randomTime)
     }
 }
-dino.classList.add('dinoAnimation')
-generateObstacles()
-generateBackElem('back_elem',radomTimeOffset)
-generateBackElem('back_elem2',)
+function gameStart(e) {
+    if (e.keyCode == 32 && !gameRunning)
+    {
+        gameRunning = true;
+        document.getElementById('gameStart').remove()
+        dino.classList.add('dinoAnimation')
+        generateObstacles() // generate obstacles boxes
+        generateBackElem('back_elem',radomTimeOffset * 0.5, gameSpeed) // generate  mousholes 
+        generateBackElem('back_elem2',radomTimeOffset, gameSpeed) // generate  chains
+        generateBackElem('back_elem3',radomTimeOffset*0.01, gameSpeed) // generate windows
+    }
+}
+document.addEventListener('keyup', gameStart)
 
 const refreshPage = () => {
     location.reload();
