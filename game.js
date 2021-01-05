@@ -19,7 +19,7 @@ let isJumping = false //for jump purpose *NO NEED TO CHANGE*
 let gravity = 0.1 //garvity force
 let jumpStep = 30 //jump speed 
 let jumpHeightMulti =  30 //multipler for jump speed for max jump height
-let refreshInterv = 20 // refreshing interval for game
+let refreshInterv = 15 // refreshing interval for game
 let gameSpeed = 5 // game speed 
 let score = 0 // initla score
 let gameRunning = false; //temp var *NO NEED TO CHANGE* 
@@ -63,6 +63,8 @@ function generateObstacles() {
             clearInterval(timerObstacle)
             gameOver.style.visibility = "visible"
             dino.classList.remove('dinoAnimation')
+            dino.style.width = '70px'
+            dino.style.backgroundImage = 'url(images/ch_dead.png)'
             isGameOver = true
             document.querySelectorAll('.hideonover').forEach(e => e.remove());  //remove all elements with hideonover class
             }
@@ -139,9 +141,9 @@ function gameStart(e) {
         document.getElementById('gameStart').remove()
         dino.classList.add('dinoAnimation')
         generateObstacles() // generate obstacles boxes
-        generateBackElem('back_elem',radomTimeOffset * 0.5, gameSpeed) // generate  mousholes 
-        generateBackElem('back_elem2',radomTimeOffset, gameSpeed) // generate  chains
-        generateBackElem('back_elem3',radomTimeOffset*0.01, gameSpeed) // generate windows
+        generateBackElem('back_elem',100+(refreshInterv*gameSpeed*20), gameSpeed) // generate  mousholes 
+        generateBackElem('back_elem2',60, gameSpeed) // generate  chains
+        generateBackElem('back_elem3',100+(refreshInterv*gameSpeed*100), gameSpeed) // generate windows
     } else {
         if (!isJumping) {// check if dino is on ground
             isJumping = true 

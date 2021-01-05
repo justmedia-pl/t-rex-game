@@ -10,7 +10,9 @@
 {
     width: 60px;
     height: 60px;
-    background-color: red; /* dead dino */
+    background-image: url('images/ch_s0.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
     position: absolute;
     bottom: 10px;
     left: 10px;
@@ -18,7 +20,7 @@
 }
 .dinoAnimation
 {
-    animation: 0.1s dinowalk infinite;
+    animation: 1s dinowalk infinite;
 }
 #grid
 {
@@ -46,7 +48,7 @@
     height: 35px;
     position: absolute;
     bottom: 20%;
-    z-index: 4;
+    z-index: 2;
     background-image: url('images/mouse.png');
     background-position: bottom center;
     background-repeat: no-repeat;
@@ -57,19 +59,19 @@
     height: 50px;
     position: absolute;
     top: 0%;
-    z-index: 2;
+    z-index: 4;
     background-image: url('images/chain.png');
     background-position: bottom center;
     background-repeat: no-repeat;
 }
 .back_elem3
 {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     position: absolute;
-    bottom: 40%;
-    z-index: 2;
-    background-image: url('images/windo.png');
+    bottom: 30%;
+    z-index: 3;
+    background-image: url('images/windo2.png');
     background-position: bottom center;
     background-repeat: no-repeat;
 }
@@ -107,9 +109,10 @@
 }
 #playAgain
 {
-    background-color: #ee7d11;
-    color: #fff;
-    padding: 2px 5px;
+    background: linear-gradient(to bottom, rgb(144, 183, 177) 50%, rgb(186, 236, 228) 0%);
+    font-weight: 600;
+    color:#283331;
+    padding: 5px 15px;
     text-decoration: none;
     margin: auto
 }
@@ -117,12 +120,23 @@
 @keyframes dinowalk
 {
     0% {
-        background-color: green
+        background-image: url('images/ch_s1.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    }
+    25% {
+        background-image: url('images/ch_s2.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
     }
     50% {
-        background-color: sienna;
+        background-image: url('images/ch_s3.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
     }
     100% {
-        background-color: green;
+        background-image: url('images/ch_s4.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
     }
 }
