@@ -7,11 +7,15 @@
 {
     width: 60px;
     height: 60px;
-    background-color: red;
+    background-color: red; /* dead dino */
     position: absolute;
     bottom: 10px;
     left: 10px;
     z-index: 5;
+}
+.dinoAnimation
+{
+    animation: 1s dinowalk infinite;
 }
 #grid
 {
@@ -63,4 +67,16 @@
     visibility: hidden;
     left: 50%;
     transform: translateX(-50%);
+}
+@keyframes dinowalk
+{
+    0% {
+        background-color: green
+    }
+    50% {
+        background-color: sienna;
+    }
+    100% {
+        background-color: green;
+    }
 }

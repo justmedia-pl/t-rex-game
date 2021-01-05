@@ -69,12 +69,13 @@ function dinoJump() {
 function generateObstacles() {
     if (!isGameOver)
      {   
-        let randomTime = (Math.random() * radomTimeOffset) + (gravity*radomTimeOffset) //msec
-        let obstaclePositionOffset = 100
-        let obstaclePosition = grid.getBoundingClientRect().width + obstaclePositionOffset
+        let randomTime = (Math.random() * radomTimeOffset) + (gravity*radomTimeOffset) //msec interval to make game playable on start
+       
         const obstacle = document.createElement('div')
         obstacle.classList.add('obstacle')
         obstacle.classList.add('hideonover')
+        let obstaclePositionOffset = obstacle.getBoundingClientRect().width
+        let obstaclePosition = grid.getBoundingClientRect().width + obstaclePositionOffset
         grid.appendChild(obstacle)
         obstacle.style.left = obstaclePosition
         console.log(randomTime);
@@ -95,6 +96,7 @@ function generateObstacles() {
             if (obstaclePosition > 10 && obstaclePosition < dino.getBoundingClientRect().width && position < obstacle.getBoundingClientRect().height){
             clearInterval(timerObstacle)
            gameOver.style.visibility = "visible"
+           dino.classList.remove('dinoAnimation')
             isGameOver = true
             document.querySelectorAll('.hideonover').forEach(e => e.remove());
             }
@@ -112,16 +114,17 @@ function generateObstacles() {
     }
 }
 
-function generateBackElem(elem) {
+function generateBackElem(elem,offset) {
     if (!isGameOver)
      {   
-        let randomTime = Math.random() * radomTimeOffset //msec
-        let backelemPositionOffset = 100
-        let backelemPosition = grid.getBoundingClientRect().width + backelemPositionOffset
+        let randomTime = Math.random() * offset //msec
+       
         const backelem = document.createElement('div')
         backelem.classList.add(elem)
         backelem.classList.add('hideonover')
         grid.appendChild(backelem)
+        let backelemPositionOffset = backelem.getBoundingClientRect().width
+        let backelemPosition = grid.getBoundingClientRect().width + backelemPositionOffset
         backelem.style.left = backelemPosition
         console.log(randomTime);
 
@@ -136,13 +139,13 @@ function generateBackElem(elem) {
             backelem.style.left = backelemPosition +'px'
         }
     },refreshInterv)
-    timeoutback = setTimeout(function(){generateBackElem(elem);},randomTime)
+    timeoutback = setTimeout(function(){generateBackElem(elem,radomTimeOffset);},randomTime)
     }
 }
-
+dino.classList.add('dinoAnimation')
 generateObstacles()
-generateBackElem('back_elem')
-generateBackElem('back_elem2')
+generateBackElem('back_elem',radomTimeOffset)
+generateBackElem('back_elem2',)
 
 const refreshPage = () => {
     location.reload();
