@@ -1,4 +1,4 @@
-# t-rex
+# T-rex SAMPLE JavaScript project
 
 ## Introduction
 T-rex is a demo project for javascript with some html and css elements 
