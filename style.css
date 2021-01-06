@@ -6,6 +6,15 @@
 {
    background-color: rgb(58, 58, 58); 
 }
+#gridBg
+{
+    position: absolute;  
+    display: flex
+}
+#gridBg img
+{
+   
+}
 #dino
 {
     width: 60px;

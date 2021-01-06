@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded',() => {
 //set const varas *NO NEED TO CHANGE* 
 const dino = document.getElementById('dino');
 const grid = document.getElementById('grid');
+const gridBg = document.getElementById('gridBg');
 const scoreboard = document.getElementById('score');
 const gameOver = document.getElementById('gameOver')
 
@@ -24,12 +25,30 @@ let gameSpeed = 5 // game speed
 let score = 0 // initla score
 let gameRunning = false; //temp var *NO NEED TO CHANGE* 
 let isGameOver = false //temp var *NO NEED TO CHANGE* 
-
+let img = document.createElement('img')
+img.src = 'images/castle.jpg'
+let bgPosition = 0;
 // COMPUTED VALUES
 let jumpMaxHeight = (jumpStep*gravity) * jumpHeightMulti //calcuating max height
 let radomTimeOffset = refreshInterv * jumpStep * jumpHeightMulti //calculating delay for obstacle genration based on jumplenght and game refreshinterval
 // 
+//BACKGROUND LOOP
+function bgLoop()
+{
+    gridBg.appendChild(img)
+    gridBg.appendChild(img.cloneNode(true))
+    let bganim = setInterval(function() {
+   
+        if (!isGameOver && gameRunning) 
+        {     
+        bgPosition -= gameSpeed;
+        if (Math.abs(bgPosition) >=  grid.getBoundingClientRect().width)   bgPosition = 0
+        console.log(bgPosition)
+        gridBg.style.left = bgPosition
 
+        }
+    },refreshInterv)
+}
 // OBSTACLES function 
 function generateObstacles() {
     if (!isGameOver) 
@@ -135,8 +154,10 @@ function dinoJump() {
     }
 }
 //Game Start
+bgLoop();
 function gameStart(e) {
     if (e.keyCode == 32 && !gameRunning) {
+       
         gameRunning = true;
         document.getElementById('gameStart').remove()
         dino.classList.add('dinoAnimation')
