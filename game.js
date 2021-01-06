@@ -12,19 +12,21 @@ const grid = document.getElementById('grid');
 const gridBg = document.getElementById('gridBg');
 const scoreboard = document.getElementById('score');
 const gameOver = document.getElementById('gameOver')
+const status = document.getElementById('status')
 
 //game setings
 let position = 10 //dino start position
 let basepostion = position; // stored init value *NO NEED TO CHANGE* 
 let isJumping = false //for jump purpose *NO NEED TO CHANGE* 
-let gravity = 0.1 //garvity force
 let jumpStep = 30 //jump speed 
-let jumpHeightMulti =  30 //multipler for jump speed for max jump height
-let refreshInterv = 15 // refreshing interval for game
+let jumpHeightMulti =  60 //multipler for jump speed for max jump height
+let refreshInterv = 10 // refreshing interval for game
 let gameSpeed = 5 // game speed 
+let gravity = 0.1 * (gameSpeed/10) //garvity force
 let score = 0 // initla score
 let gameRunning = false; //temp var *NO NEED TO CHANGE* 
 let isGameOver = false //temp var *NO NEED TO CHANGE* 
+
 let img = document.createElement('img')
 img.src = 'images/castle.jpg'
 let bgPosition = 0;
@@ -33,6 +35,7 @@ let jumpMaxHeight = (jumpStep*gravity) * jumpHeightMulti //calcuating max height
 let radomTimeOffset = refreshInterv * jumpStep * jumpHeightMulti //calculating delay for obstacle genration based on jumplenght and game refreshinterval
 // 
 //BACKGROUND LOOP
+
 function bgLoop()
 {
     gridBg.appendChild(img)
@@ -43,12 +46,14 @@ function bgLoop()
         {     
         bgPosition -= gameSpeed;
         if (Math.abs(bgPosition) >=  grid.getBoundingClientRect().width)   bgPosition = 0
-        console.log(bgPosition)
         gridBg.style.left = bgPosition
-
-        }
+       
+        } 
+        
     },refreshInterv)
+    
 }
+
 // OBSTACLES function 
 function generateObstacles() {
     if (!isGameOver) 
@@ -109,7 +114,6 @@ function generateBackElem(elem,offset,speed) {
         grid.appendChild(backelem)
         let backelemPosition = grid.getBoundingClientRect().width + backelem.getBoundingClientRect().width
         backelem.style.left = backelemPosition
-        console.log(randomTime);
 
     let timerbackelem = setInterval(function() {
     if (backelemPosition < 0 - backelem.getBoundingClientRect().width)  {   
@@ -155,6 +159,8 @@ function dinoJump() {
 }
 //Game Start
 bgLoop();
+
+
 function gameStart(e) {
     if (e.keyCode == 32 && !gameRunning) {
        
@@ -166,6 +172,7 @@ function gameStart(e) {
         generateBackElem('back_elem2',60, gameSpeed) // generate  chains
         generateBackElem('back_elem3',100+(refreshInterv*gameSpeed*100), gameSpeed) // generate windows
     } else {
+        
         if (!isJumping) {// check if dino is on ground
             isJumping = true 
              dinoJump(); // call dinoJump function  
