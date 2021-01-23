@@ -27,9 +27,24 @@
     left: 10px;
     z-index: 5;
 }
+#sword
+{
+    width: 60px;
+    height: 60px; 
+    position: relative;
+    left: 10px;
+    z-index: 11;   
+}
 .dinoAnimation
 {
     animation: 1s dinowalk infinite;
+}
+
+.dinoAttacking
+{
+    animation: 0.5s dinoattack infinite;
+    position:relative;
+    z-index: 11;
 }
 #grid
 {
@@ -144,6 +159,25 @@
     }
     100% {
         background-image: url('images/ch_s4.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    }
+}
+
+@keyframes dinoattack
+{
+    0% {
+        background-image: url('images/ch_at1.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    }
+    50% {
+        background-image: url('images/ch_at2.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    }
+    100% {
+        background-image: url('images/ch_at1.png');
     background-position: bottom right;
     background-repeat: no-repeat;
     }

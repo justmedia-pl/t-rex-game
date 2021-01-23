@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded',() => {
 //set const varas *NO NEED TO CHANGE* 
 const dino = document.getElementById('dino');
 const grid = document.getElementById('grid');
+const sword = document.getElementById('sword');
 const gridBg = document.getElementById('gridBg');
 const scoreboard = document.getElementById('score');
 const gameOver = document.getElementById('gameOver')
@@ -18,6 +19,7 @@ const status = document.getElementById('status')
 let position = 10 //dino start position
 let basepostion = position; // stored init value *NO NEED TO CHANGE* 
 let isJumping = false //for jump purpose *NO NEED TO CHANGE* 
+let isAttacking = false
 let jumpStep = 30 //jump speed 
 let jumpHeightMulti =  60 //multipler for jump speed for max jump height
 let refreshInterv = 10 // refreshing interval for game
@@ -33,9 +35,12 @@ let bgPosition = 0;
 // COMPUTED VALUES
 let jumpMaxHeight = (jumpStep*gravity) * jumpHeightMulti //calcuating max height
 let radomTimeOffset = refreshInterv * jumpStep * jumpHeightMulti //calculating delay for obstacle genration based on jumplenght and game refreshinterval
-// 
-//BACKGROUND LOOP
 
+/**
+ * @name bgLoop()
+ * Moving background function
+ * for background creation and animation based on gameSpeed 
+ *  **/
 function bgLoop()
 {
     gridBg.appendChild(img)
@@ -53,8 +58,19 @@ function bgLoop()
     },refreshInterv)
     
 }
-
-// OBSTACLES function 
+function updateScore(val,spd)
+{
+    score += val;
+    //increse game speed at score +
+    radomTimeOffset -= val 
+    gameSpeed += spd 
+    scoreboard.textContent = score    // write score to page
+}
+/**
+ * @name generateObstacles()
+ * Obtacles function
+ * for creation and moving obstacles based on gameSpeed 
+ *  **/
 function generateObstacles() {
     if (!isGameOver) 
      {   
@@ -74,23 +90,25 @@ function generateObstacles() {
     if (obstaclePosition < 0 - obstacle.getBoundingClientRect().width) {   
         clearInterval(timerObstacle)
         obstacle.remove()
-        score += 10;
-        //increse game speed at score +
-        radomTimeOffset -= 10 
-        gameSpeed +=0.1 
-        scoreboard.textContent = score    // write score to page
+        updateScore(10,0.1)
         } else {
         obstaclePosition -= gameSpeed
         obstacle.style.left = obstaclePosition +'px'
         // check for colision and stop the game
             if (obstaclePosition > 10 && obstaclePosition < dino.getBoundingClientRect().width && position < obstacle.getBoundingClientRect().height){
-            clearInterval(timerObstacle)
-            gameOver.style.visibility = "visible"
-            dino.classList.remove('dinoAnimation')
-            dino.style.width = '70px'
-            dino.style.backgroundImage = 'url(images/ch_dead.png)'
-            isGameOver = true
-            document.querySelectorAll('.hideonover').forEach(e => e.remove());  //remove all elements with hideonover class
+                if (!isAttacking){
+                    clearInterval(timerObstacle)
+                    gameOver.style.visibility = "visible"
+                    dino.classList.remove('dinoAnimation')
+                    dino.style.width = '70px'
+                    dino.style.backgroundImage = 'url(images/ch_dead.png)'
+                    isGameOver = true
+                    document.querySelectorAll('.hideonover').forEach(e => e.remove());  //remove all elements with hideonover class
+                 } else {
+                clearInterval(timerObstacle)
+                obstacle.remove()
+                updateScore(5,2);
+                }
             }
         }
     },refreshInterv)
@@ -128,7 +146,24 @@ function generateBackElem(elem,offset,speed) {
     timeoutback = setTimeout(function(){generateBackElem(elem,radomTimeOffset,gameSpeed);},randomTime)
     }
 }
+//Dino attack function
+function dinoAttack() {
+    if (!isGameOver)
+    {   
+        console.log('status')
+       console.log('attacking')
+       isAttacking = true
+       sword.classList.add('dinoAttacking')  
+            setTimeout(function(){
+                // toggle back after 1 second
+               isAttacking = false
+               sword.classList.remove('dinoAttacking') 
+               console.log('stopattacking')
+              },refreshInterv*50)
+            
 
+    }
+}
 //Dino JUMP function
 function dinoJump() {
     if (!isGameOver)
@@ -162,7 +197,7 @@ bgLoop();
 
 
 function gameStart(e) {
-    if (e.keyCode == 32 && !gameRunning) {
+    if (!gameRunning) {
        
         gameRunning = true;
         document.getElementById('gameStart').remove()
@@ -172,14 +207,15 @@ function gameStart(e) {
         generateBackElem('back_elem2',60, gameSpeed) // generate  chains
         generateBackElem('back_elem3',100+(refreshInterv*gameSpeed*100), gameSpeed) // generate windows
     } else {
-        
-        if (!isJumping) {// check if dino is on ground
+        if (!isJumping && e.keyCode == 38 ) {// check if dino is on ground
             isJumping = true 
              dinoJump(); // call dinoJump function  
+        } else if (!isAttacking && e.keyCode == 32) {
+           dinoAttack();
         }
     }
 }
-document.addEventListener('keyup', gameStart)
+document.addEventListener('keydown', gameStart)
 
 //Restart game on playAgain button
 const refreshPage = () => {
